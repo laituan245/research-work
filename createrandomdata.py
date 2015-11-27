@@ -35,10 +35,11 @@ for i in range(500):
     nodes.append(newNode)
 
 
-tempList1 = range(500)
-random.shuffle(tempList1)
-tempList2 = range(500)
-random.shuffle(tempList2)
+pairs = []
+for i in range(500):
+    for j in range(500):
+        pairs.append((i,j))
+random.shuffle(pairs)
 
 edges = []
 while len(edges) != 300:
@@ -50,21 +51,20 @@ while len(edges) != 300:
         outDegree[i+1] = 0
 
     edgeId = 0;
-    for i in tempList1:
-        for j in tempList2:
-            if len(edges) == 300:
-                break
-            if i != j:
-                if random.randint(1,1000) % 2:
-                    edgeId = edgeId + 1
-                    newEdge = {}
-                    newEdge["id"] = edgeId
-                    newEdge["source"] = i + 1
-                    newEdge["target"] = j + 1
-                    inDegree[j+1] += 1
-                    outDegree[i+1] += 1
-                    newEdge["value"] = random.randint(1,2000)
-                    edges.append(newEdge)
+    for i, j in pairs:       
+        if len(edges) == 300:
+            break
+        if i != j:
+            if random.randint(1,1000) % 2:
+                edgeId = edgeId + 1
+                newEdge = {}
+                newEdge["id"] = edgeId
+                newEdge["source"] = i + 1
+                newEdge["target"] = j + 1
+                inDegree[j+1] += 1
+                outDegree[i+1] += 1
+                newEdge["value"] = random.randint(1,2000)
+                edges.append(newEdge)
 
 f = open('randomdata.txt', 'w')
 f.write(json.dumps({"nodes": nodes, "edges": edges}))
